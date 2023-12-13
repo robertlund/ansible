@@ -1,5 +1,5 @@
 ---
-- hosts: ALL_SRV
+- hosts: servers
   become: true
   become_method: sudo
   tasks:
