@@ -19,7 +19,7 @@
       mode: u=rw,g=r,o=r
 
   - name: Restart service chronyd
-    ansible.builtin.systemd_service:
+    systemd_service:
       state: restarted
       daemon_reload: true
       name: chronyd
