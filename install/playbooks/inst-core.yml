@@ -1,10 +1,17 @@
-- name: install core packages
-  hosts: "{{ hosts }}"
-  become: yes
+---
+- hosts: servers
+  become: true
+  become_method: sudo
   tasks:
   - name: install core packages
     apt:
       name:
         - prometheus-node-exporter
-        - nfs-common
+        - chrony
       update_cache: yes
+
+  - name: Ansible replace string example
+    replace:
+      path: /etc/chrony/chrony.conf
+      regexp: 'pool *'
+      replace: "server ntp.komplisert.org             iburst maxsources 1"
