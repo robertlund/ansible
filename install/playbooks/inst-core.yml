@@ -19,7 +19,7 @@
       mode: u=rw,g=r,o=r
 
   - name: Restart service chronyd
-    systemd_service:
+    systemd:
       state: restarted
       daemon_reload: true
       name: chronyd
