@@ -2,6 +2,8 @@
 - hosts: servers
   become: true
   become_user: root
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   tasks:
     - name: Update apt repo and cache on all Debian/Ubuntu boxes
       apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
@@ -23,13 +25,18 @@
         test_command: uptime
       when: reboot_required_file.stat.exists
 
-- hosts: 127.0.0.1
+- hosts: localhost
+  become: true
+  become_user: root
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   tasks:
-    - name: Send ntfy update
+    - name: Send gotify update
       uri:
-        url: "https://ntfy.xxxx.yy/os"
+        url: "https://gotify.xxxx.yyy/message?token=XXXXXXXXXXXX"
         method: POST
-        headers:
-          Content-Type: application/json
-          Authorization: "Bearer tk_xxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        body: "{{ inventory_hostname }} apt update complete"
+        body_format: json
+        body:
+          title: APT Update Cron
+          message: "{{ inventory_hostname }} apt update complete"
+          priority: 8
